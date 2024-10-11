@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Werteversteigerung</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="sidebar left-sidebar">
+        <h2>Kommende Werte</h2>
+        <ul id="remainingWords"></ul>
+    </div>
+    
+    <div class="container">
+        <h1>Werteversteigerung </br> Schulungsteam Emsland Süd</h1>
+        <h2 id="randomWord">Zufälliges Wort</h2>
+        <button onclick="selectRandomWord()">Neues Wort</button>
+        <div class="fields-container">
+            <div class="fields-container">
+                <div class="field">
+                    <h3>Gruppe 1:</h3>
+                    <div class="total" id="total1">1000</div>
+                    <input type="number" id="input1" />
+                    <button onclick="subtractFromTotal(1)">Abziehen</button>
+                </div>
+                <div class="field">
+                    <h3>Gruppe 2:</h3>
+                    <div class="total" id="total2">1000</div>
+                    <input type="number" id="input2" />
+                    <button onclick="subtractFromTotal(2)">Abziehen</button>
+                </div>
+                <div class="field">
+                    <h3>Gruppe 3:</h3>
+                    <div class="total" id="total3">1000</div>
+                    <input type="number" id="input3" />
+                    <button onclick="subtractFromTotal(3)">Abziehen</button>
+                </div>
+                <div class="field">
+                    <h3>Gruppe 4:</h3>
+                    <div class="total" id="total4">1000</div>
+                    <input type="number" id="input4" />
+                    <button onclick="subtractFromTotal(4)">Abziehen</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="sidebar right-sidebar">
+        <h2>Gezogene Werte</h2>
+        <ul id="drawnWords"></ul>
+    </div>
+
+    <script>
+        const words = ['Engagement', 'Organisation', 'Coolness', 'Humor', 'Hilfsbereitschaft', 'Gläubigkeit', 'Geld', 'Einfühlsamkeit', 'Vorbild', 'Ehrlichkeit', 'Kreativität', 'Selbstbewusstsein', 'Neugierde', 'Intelligenz', 'Gerechtigkeitssinn', 'Motivation', 'Durchsetzungsvermögen', 'Erfahrungen', 'Geduld', 'Zeit', 'Aufmerksamkeit', 'Mut', 'Spontaneität', 'Nachsichtigkeit', 'Verantwortungsbewusstsein', 'Offenheit'];
+        let remainingWords = [...words];
+        let drawnWords = [];
+
+        function updateWordLists() {
+            document.getElementById('remainingWords').innerHTML = remainingWords.map(word => `<li>${word}</li>`).join('');
+            document.getElementById('drawnWords').innerHTML = drawnWords.map(word => `<li class="drawn-word">${word}</li>`).join('');
+        }
+
+        function selectRandomWord() {
+            if (remainingWords.length === 0) {
+                document.getElementById('randomWord').innerText = "Alle Wörter wurden verwendet";
+                return;
+            }
+            const index = Math.floor(Math.random() * remainingWords.length);
+            const word = remainingWords.splice(index, 1)[0];
+            drawnWords.push(word);
+            document.getElementById('randomWord').innerText = word;
+            updateWordLists();
+        }
+
+        function subtractFromTotal(fieldNumber) {
+            const inputField = document.getElementById('input' + fieldNumber);
+            const totalField = document.getElementById('total' + fieldNumber);
+            const inputValue = parseInt(inputField.value) || 0;
+            const currentTotal = parseInt(totalField.innerText);
+            const newTotal = Math.max(currentTotal - inputValue, 0);
+            totalField.innerText = newTotal;
+            inputField.value = '';
+        }
+
+        updateWordLists();
+        selectRandomWord();
+    </script>
+</body>
+</html>
